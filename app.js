@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const publicDir = require('path').join(__dirname,'/public');
 
 // initialize express app
 const app = express();
@@ -22,7 +23,8 @@ db.once('open', function() {
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-
+//For static resources
+app.use(express.static(publicDir));
 app.use('/homepage',homepage_route)
 
 
@@ -30,4 +32,11 @@ let port = 52267;
 
 app.listen(port, () => {
     console.log('Server is up and running on port numner ' + port);
+
 });
+
+app.get('/',(req, res)=>{
+    res.sendFile('views/homepage.html', {root: __dirname });
+    //res.end();
+
+})
